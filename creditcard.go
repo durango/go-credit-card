@@ -60,7 +60,7 @@ func (c *Card) Validate(allowTestNumbers ...bool) error {
   month, _ = strconv.Atoi(c.Month)
 
   if year < time.Now().UTC().Year() {
-    return errors.New("Credit card has expired y.")
+    return errors.New("Credit card has expired.")
   }
 
   if year == time.Now().UTC().Year() && month < int(time.Now().UTC().Month()) {
@@ -126,11 +126,9 @@ func (c *Card) MethodValidate() (Company, error) {
   ccDigits := digits{}
 
   for i := 0; i < 6; i++ {
-    if i > ccLen {
-      break
+    if i < ccLen {
+      ccDigits[i], _ = strconv.Atoi(c.Number[:i+1])
     }
-
-    ccDigits[i], _ = strconv.Atoi(c.Number[:i+1])
   }
 
   switch {
@@ -146,10 +144,6 @@ func (c *Card) MethodValidate() (Company, error) {
     return Company{"diners club enroute", "Diners Club enRoute"}, nil
   case ((ccDigits.At(3) >= 300 && ccDigits.At(3) <= 305) || ccDigits.At(3) == 309 || ccDigits.At(2) == 36 || ccDigits.At(2) == 38 || ccDigits.At(2) == 39) && ccLen <= 14:
     return Company{"diners club international", "Diners Club International"}, nil
-  // On November 8, 2004, MasterCard and Diners Club formed an alliance. Diners Club cards issued in Canada and the United States start with 54 or 55 and are treated as MasterCards worldwide.
-  //   -- http://en.wikipedia.org/wiki/Bank_card_number
-  // case ccDigits.At(2) == 54 || ccDigits.At(2) == 55:
-  //   return Company{"diners club united states & canada", "Diners Club United States & Canada"}, nil
   case ccDigits.At(4) == 6011 || (ccDigits.At(6) >= 622126 && ccDigits.At(6) <= 622925) || (ccDigits.At(3) >= 644 && ccDigits.At(3) <= 649) || ccDigits.At(2) == 65:
     return Company{"discover", "Discover"}, nil
   case ccDigits.At(3) == 636 && ccLen >= 16 && ccLen <= 19:
@@ -178,20 +172,28 @@ func (c *Card) MethodValidate() (Company, error) {
 
 // ValidateNumber will check the credit card's number against the Luhn algorithm
 func (c *Card) ValidateNumber() bool {
-  var ca, sum, mul, mod uint8
+  var sum int
+  var alternate bool
 
   numberLen := len(c.Number)
 
-  for i := numberLen-1; i >= 0; i-- {
-    ca = c.Number[i] << mul
-    mod = 0
-    if ca > 9 {
-      mod = 1
-    }
-
-    sum += ca - (-(mod))|9
-    mul ^= 1
+  if numberLen < 13 || numberLen > 19 {
+    return false
   }
 
-   return sum % 10 == 0 && sum > 0
+  for i := numberLen-1; i > -1; i-- {
+    mod, _ := strconv.Atoi(string(c.Number[i]))
+    if alternate {
+      mod *= 2
+      if mod > 9 {
+        mod = (mod % 10) + 1
+      }
+    }
+
+    alternate = !alternate
+
+    sum += mod
+  }
+
+  return sum % 10 == 0
 }

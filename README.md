@@ -1,4 +1,4 @@
-# go-credit-card [![Build Status](https://travis-ci.org/durango/go-credit-card.svg?branch=master)](https://travis-ci.org/durango/go-credit-card) [![GoDoc](https://godoc.org/github.com/durango/go-credit-card?status.svg)](https://godoc.org/github.com/durango/go-credit-card)
+# go-credit-card [![Build Status](https://travis-ci.org/durango/go-credit-card.svg?branch=master)](https://travis-ci.org/durango/go-credit-card) [![Coverage Status](https://coveralls.io/repos/durango/go-credit-card/badge.png?branch=master)](https://coveralls.io/r/durango/go-credit-card?branch=master) [![GoDoc](https://godoc.org/github.com/durango/go-credit-card?status.svg)](https://godoc.org/github.com/durango/go-credit-card)
 
 Basic credit card validation using the [Luhn algorithm](http://en.wikipedia.org/wiki/Luhn_algorithm)
 
