@@ -1,6 +1,6 @@
-# go-credit-card
+# go-credit-card [![Build Status](https://travis-ci.org/durango/go-credit-card.svg?branch=master)](https://travis-ci.org/durango/go-credit-card) [![GoDoc](https://godoc.org/github.com/durango/go-credit-card?status.svg)](https://godoc.org/github.com/durango/go-credit-card)
 
-Basic credit card validation with the [Luhn algorithm](http://en.wikipedia.org/wiki/Luhn_algorithm)
+Basic credit card validation using the [Luhn algorithm](http://en.wikipedia.org/wiki/Luhn_algorithm)
 
 Currently identifies the following credit card companies:
 * American Express
