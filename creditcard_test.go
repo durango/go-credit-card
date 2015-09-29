@@ -62,6 +62,18 @@ func TestValidation(t *testing.T) {
       So(err, ShouldNotBeNil)
     })
 
+    Convey("When the month is non-sensical", func() {
+      nextYear, _, _ := (time.Now().UTC()).AddDate(1, 0, 0).Date()
+
+      examples := []int{0, 13}
+	  for _, month := range examples {
+        card := Card{Number: "4012888888881881", Cvv: "111", Month: strconv.Itoa(int(month)), Year: strconv.Itoa(nextYear)}
+        err := card.Validate(true)
+
+        So(err, ShouldNotBeNil)
+      }
+    })
+
     Convey("When the expiration month and year is less than the current date", func() {
       year1, month1, _ := (time.Now().UTC()).AddDate(0, -1, 0).Date()
 
