@@ -59,6 +59,10 @@ func (c *Card) Validate(allowTestNumbers ...bool) error {
 
   month, _ = strconv.Atoi(c.Month)
 
+  if month < 1 || 12 < month {
+    return errors.New("Invalid month.")
+  }
+
   if year < time.Now().UTC().Year() {
     return errors.New("Credit card has expired.")
   }
