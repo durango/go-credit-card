@@ -3,7 +3,6 @@ sudo: false
 language: go
 
 go:
-  - 1.2
   - 1.3
   - 1.3.3
   - 1.4
@@ -12,7 +11,7 @@ go:
 before_install:
   - go get github.com/axw/gocov/gocov
   - go get github.com/mattn/goveralls
-  - go get golang.org/x/tools/cmd/cover
+  - if ! go get code.google.com/p/go.tools/cmd/cover; then go get golang.org/x/tools/cmd/cover; fi
   - go get github.com/smartystreets/goconvey/convey
 
 env:
@@ -20,6 +19,6 @@ env:
     - secure: "KAujr5mge2CMsYFG8e1+I2ACZqsWRwF1pqqnDJ3AVZed6UbdT/1yPYyT2RO1JknVXCOi83h+Psf31AWVlO7IbEPLCwG5xDo5AJnNdnsNn9mTVd/ukiscJB6UWxOeCXTW6kUmd+5W72GIqlbgQb8xaTAbMpu6t+5cH1lRXoN+Osk="
 
 script:
-  - goveralls -repotoken $COVERALLS
+  - $HOME/gopath/bin/goveralls -service=travis-ci -repotoken $COVERALLS
 
 secure: "KAujr5mge2CMsYFG8e1+I2ACZqsWRwF1pqqnDJ3AVZed6UbdT/1yPYyT2RO1JknVXCOi83h+Psf31AWVlO7IbEPLCwG5xDo5AJnNdnsNn9mTVd/ukiscJB6UWxOeCXTW6kUmd+5W72GIqlbgQb8xaTAbMpu6t+5cH1lRXoN+Osk="
