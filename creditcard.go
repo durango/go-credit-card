@@ -111,16 +111,16 @@ func (c *Card) Validate(allowTestNumbers ...bool) error {
 }
 
 // Method returns an error from MethodValidate() or returns the
-// credit card with it's company / issuer attached to it
-func (c *Card) Method() error {
+// credit card with it's company
+func (c *Card) Method() (Company, error) {
 	company, err := c.MethodValidate()
 
 	if err != nil {
-		return err
+		return company, err
 	}
 
 	c.Company = company
-	return nil
+	return company, nil
 }
 
 // MethodValidate adds/checks/verifies the credit card's company / issuer
