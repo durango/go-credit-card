@@ -3,21 +3,23 @@
 Basic credit card validation using the [Luhn algorithm](http://en.wikipedia.org/wiki/Luhn_algorithm)
 
 Currently identifies the following credit card companies:
-* American Express
-* Bankcard
-* China Unionpay
-* Dankort
-* Diners Club Carte Blanche
-* Diners Club enRoute
-* Diners Club International
-* Discover
-* InterPayment
-* InstaPayment
-* JCB
-* Maestro
-* MasterCard
-* Visa
-* Visa Electron
+
+- American Express
+- Bankcard
+- China Unionpay
+- Dankort
+- Diners Club Carte Blanche
+- Diners Club enRoute
+- Diners Club International
+- Discover
+- Elo
+- InterPayment
+- InstaPayment
+- JCB
+- Maestro
+- MasterCard
+- Visa
+- Visa Electron
 
 ## Installation
 
