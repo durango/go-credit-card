@@ -333,12 +333,23 @@ func TestMethod(t *testing.T) {
 		})
 
 		Convey("Should work for MasterCard", func() {
-			card := Card{Number: "5425233430109903", Cvv: "1111", Month: month, Year: year}
-			err := card.Method()
+			Convey("51 - 55", func() {
+				card := Card{Number: "5425233430109903", Cvv: "1111", Month: month, Year: year}
+				err := card.Method()
 
-			So(err, ShouldBeNil)
-			So(card.Company.Short, ShouldEqual, "mastercard")
-			So(card.Company.Long, ShouldEqual, "MasterCard")
+				So(err, ShouldBeNil)
+				So(card.Company.Short, ShouldEqual, "mastercard")
+				So(card.Company.Long, ShouldEqual, "MasterCard")
+			})
+
+			Convey("2 Series", func() {
+				card := Card{Number: "2223000048410010", Cvv: "1111", Month: month, Year: year}
+				err := card.Method()
+
+				So(err, ShouldBeNil)
+				So(card.Company.Short, ShouldEqual, "mastercard")
+				So(card.Company.Long, ShouldEqual, "MasterCard")
+			})
 		})
 
 		Convey("Should work for Visa Electron", func() {
