@@ -333,7 +333,7 @@ func TestMethod(t *testing.T) {
 		})
 
 		Convey("Should work for MasterCard", func() {
-			card := Card{Number: "55555555", Cvv: "1111", Month: month, Year: year}
+			card := Card{Number: "5425233430109903", Cvv: "1111", Month: month, Year: year}
 			err := card.Method()
 
 			So(err, ShouldBeNil)
