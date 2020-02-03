@@ -175,6 +175,8 @@ func (c *Card) MethodValidate() (Company, error) {
 		(ccDigits.At(6) >= 655000 && ccDigits.At(6) <= 655019) ||
 		(ccDigits.At(6) >= 655021 && ccDigits.At(6) <= 655021):
 		return Company{"elo", "Elo"}, nil
+	case matchesValue(ccDigits.At(6), []int{606282, 637095, 637568, 637599, 637609, 637612}):
+		return Company{"hipercard", "Hipercard"}, nil
 	case ccDigits.At(3) == 636 && ccLen >= 16 && ccLen <= 19:
 		return Company{"interpayment", "InterPayment"}, nil
 	case ccDigits.At(3) >= 637 && ccDigits.At(3) <= 639 && ccLen == 16:
@@ -225,4 +227,13 @@ func (c *Card) ValidateNumber() bool {
 	}
 
 	return sum%10 == 0
+}
+
+func matchesValue(number int, numbers []int) bool {
+	for _, v := range numbers {
+		if v == number {
+			return true
+		}
+	}
+	return false
 }

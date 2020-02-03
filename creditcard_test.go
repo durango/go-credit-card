@@ -305,6 +305,15 @@ func TestMethod(t *testing.T) {
 			So(card.Company.Long, ShouldEqual, "Discover")
 		})
 
+		Convey("Should work for Hipercard", func() {
+			card := Card{Number: "6062826786276634", Cvv: "1111", Month: month, Year: year}
+			err := card.Method()
+
+			So(err, ShouldBeNil)
+			So(card.Company.Short, ShouldEqual, "hipercard")
+			So(card.Company.Long, ShouldEqual, "Hipercard")
+		})
+
 		Convey("Should work for InterPayment", func() {
 			card := Card{Number: "6360111331111111", Cvv: "1111", Month: month, Year: year}
 			err := card.Method()
