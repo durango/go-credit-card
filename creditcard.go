@@ -97,7 +97,8 @@ func (c *Card) Validate(allowTestNumbers ...bool) error {
 		"4111111111111111",
 		"4916909992637469",
 		"4000111111111115",
-		"2223000048400011":
+		"2223000048400011",
+		"6035227716427021":
 		if len(allowTestNumbers) > 0 && allowTestNumbers[0] {
 			return nil
 		}
@@ -143,6 +144,8 @@ func (c *Card) MethodValidate() (Company, error) {
 		return Company{"amex", "American Express"}, nil
 	case ccDigits.At(4) == 5610 || (ccDigits.At(6) >= 560221 && ccDigits.At(6) <= 560225):
 		return Company{"bankcard", "Bankcard"}, nil
+	case ccDigits.At(6) == 604400 || ccDigits.At(6) == 627170 || ccDigits.At(6) == 603522 || ccDigits.At(6) == 589657 || (ccDigits.At(6) >= 604201 && ccDigits.At(6) <= 604219) || (ccDigits.At(6) >= 604300 && ccDigits.At(6) <= 604399):
+		return Company{"cabal", "Cabal"}, nil
 	case ccDigits.At(2) == 62:
 		return Company{"china unionpay", "China UnionPay"}, nil
 	case ccDigits.At(3) >= 300 && ccDigits.At(3) <= 305 && ccLen == 15:

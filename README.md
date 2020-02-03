@@ -6,6 +6,7 @@ Currently identifies the following credit card companies:
 
 - American Express
 - Bankcard
+- Cabal
 - China Unionpay
 - Dankort
 - Diners Club Carte Blanche
