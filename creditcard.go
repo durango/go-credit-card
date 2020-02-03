@@ -183,6 +183,8 @@ func (c *Card) MethodValidate() (Company, error) {
 		return Company{"instapayment", "InstaPayment"}, nil
 	case ccDigits.At(4) >= 3528 && ccDigits.At(4) <= 3589:
 		return Company{"jcb", "JCB"}, nil
+	case ccDigits.At(6) == 589562:
+		return Company{"naranja", "Naranja"}, nil
 	case ccDigits.At(4) == 5018 || ccDigits.At(4) == 5020 || ccDigits.At(4) == 5038 || ccDigits.At(4) == 5612 || ccDigits.At(4) == 5893 || ccDigits.At(4) == 6304 || ccDigits.At(4) == 6759 || ccDigits.At(4) == 6761 || ccDigits.At(4) == 6762 || ccDigits.At(4) == 6763 || c.Number[:3] == "0604" || ccDigits.At(4) == 6390:
 		return Company{"maestro", "Maestro"}, nil
 	case ccDigits.At(4) == 5019:

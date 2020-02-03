@@ -370,6 +370,15 @@ func TestMethod(t *testing.T) {
 			})
 		})
 
+		Convey("Should work for Naranja", func() {
+			card := Card{Number: "5895626746595650", Cvv: "1111", Month: month, Year: year}
+			err := card.Method()
+
+			So(err, ShouldBeNil)
+			So(card.Company.Short, ShouldEqual, "naranja")
+			So(card.Company.Long, ShouldEqual, "Naranja")
+		})
+
 		Convey("Should work for Visa Electron", func() {
 			card := Card{Number: "4026424242", Cvv: "1111", Month: month, Year: year}
 			err := card.Method()

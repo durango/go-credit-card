@@ -20,6 +20,7 @@ Currently identifies the following credit card companies:
 - JCB
 - Maestro
 - MasterCard
+- Naranja
 - Visa
 - Visa Electron
 
