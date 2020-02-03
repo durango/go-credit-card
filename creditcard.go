@@ -149,6 +149,25 @@ func (c *Card) MethodValidate() (Company, error) {
 		return Company{"diners club international", "Diners Club International"}, nil
 	case ccDigits.At(4) == 6011 || (ccDigits.At(6) >= 622126 && ccDigits.At(6) <= 622925) || (ccDigits.At(3) >= 644 && ccDigits.At(3) <= 649) || ccDigits.At(2) == 65:
 		return Company{"discover", "Discover"}, nil
+	// Elo must be checked before interpayment
+	case ccDigits.At(4) == 4011 || ccDigits.At(6) == 431274 || ccDigits.At(6) == 438935 ||
+		ccDigits.At(6) == 451416 || ccDigits.At(6) == 457393 || ccDigits.At(4) == 4576 ||
+		ccDigits.At(6) == 457631 || ccDigits.At(6) == 457632 || ccDigits.At(6) == 504175 ||
+		ccDigits.At(6) == 627780 || ccDigits.At(6) == 636297 || ccDigits.At(6) == 636368 ||
+		ccDigits.At(6) == 636369 || (ccDigits.At(6) >= 506699 && ccDigits.At(6) <= 506778) ||
+		(ccDigits.At(6) >= 509000 && ccDigits.At(6) <= 509999) ||
+		(ccDigits.At(6) >= 650031 && ccDigits.At(6) <= 650051) ||
+		(ccDigits.At(6) >= 650035 && ccDigits.At(6) <= 650033) ||
+		(ccDigits.At(6) >= 650405 && ccDigits.At(6) <= 650439) ||
+		(ccDigits.At(6) >= 650485 && ccDigits.At(6) <= 650538) ||
+		(ccDigits.At(6) >= 650541 && ccDigits.At(6) <= 650598) ||
+		(ccDigits.At(6) >= 650700 && ccDigits.At(6) <= 650718) ||
+		(ccDigits.At(6) >= 650720 && ccDigits.At(6) <= 650727) ||
+		(ccDigits.At(6) >= 650901 && ccDigits.At(6) <= 650920) ||
+		(ccDigits.At(6) >= 651652 && ccDigits.At(6) <= 651679) ||
+		(ccDigits.At(6) >= 655000 && ccDigits.At(6) <= 655019) ||
+		(ccDigits.At(6) >= 655021 && ccDigits.At(6) <= 655021):
+		return Company{"elo", "Elo"}, nil
 	case ccDigits.At(3) == 636 && ccLen >= 16 && ccLen <= 19:
 		return Company{"interpayment", "InterPayment"}, nil
 	case ccDigits.At(3) >= 637 && ccDigits.At(3) <= 639 && ccLen == 16:

@@ -359,6 +359,15 @@ func TestMethod(t *testing.T) {
 			So(card.Company.Long, ShouldEqual, "Visa")
 		})
 
+		Convey("Should work for Elo", func() {
+			card := Card{Number: "6362970000457013", Cvv: "1111", Month: month, Year: year}
+			err := card.Method()
+
+			So(err, ShouldBeNil)
+			So(card.Company.Short, ShouldEqual, "elo")
+			So(card.Company.Long, ShouldEqual, "Elo")
+		})
+
 		Convey("Should fail to recognize an unknown number", func() {
 			card := Card{Number: "1112424242", Cvv: "1111", Month: month, Year: year}
 			err := card.Method()
