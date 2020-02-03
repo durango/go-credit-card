@@ -195,6 +195,8 @@ func (c *Card) MethodValidate() (Company, error) {
 		return Company{"visa electron", "Visa Electron"}, nil
 	case ccDigits.At(1) == 4:
 		return Company{"visa", "Visa"}, nil
+	case ccDigits.At(2) == 50:
+		return Company{"aura", "Aura"}, nil
 	default:
 		return Company{"", ""}, errors.New("Unknown credit card method.")
 	}

@@ -5,6 +5,7 @@ Basic credit card validation using the [Luhn algorithm](http://en.wikipedia.org/
 Currently identifies the following credit card companies:
 
 - American Express
+- Aura
 - Bankcard
 - Cabal
 - China Unionpay
