@@ -309,12 +309,23 @@ func TestMethod(t *testing.T) {
 		})
 
 		Convey("Should work for China UnionPay", func() {
-			card := Card{Number: "62111111111", Cvv: "1111", Month: month, Year: year}
-			err := card.Method()
+			Convey("62", func() {
+				card := Card{Number: "62111111111", Cvv: "1111", Month: month, Year: year}
+				err := card.Method()
 
-			So(err, ShouldBeNil)
-			So(card.Company.Short, ShouldEqual, "china unionpay")
-			So(card.Company.Long, ShouldEqual, "China UnionPay")
+				So(err, ShouldBeNil)
+				So(card.Company.Short, ShouldEqual, "china unionpay")
+				So(card.Company.Long, ShouldEqual, "China UnionPay")
+			})
+
+			Convey("81", func() {
+				card := Card{Number: "810111111111", Cvv: "1111", Month: month, Year: year}
+				err := card.Method()
+
+				So(err, ShouldBeNil)
+				So(card.Company.Short, ShouldEqual, "china unionpay")
+				So(card.Company.Long, ShouldEqual, "China UnionPay")
+			})
 		})
 
 		Convey("Should work for Dankort", func() {
