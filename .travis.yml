@@ -1,6 +1,6 @@
-sudo: false
-
 language: go
+install: true
+sudo: required
 
 go:
   - 1.13.x
@@ -9,15 +9,13 @@ git:
   depth: 1
 
 before_install:
-  - go get github.com/axw/gocov/gocov
+  - go get -v golang.org/x/lint/golint
   - go get github.com/mattn/goveralls
-  - if ! go get code.google.com/p/go.tools/cmd/cover; then go get golang.org/x/tools/cmd/cover; fi
-  - go get github.com/smartystreets/goconvey/convey
-
-env: GO111MODULE=on GOFLAGS='-mod vendor'
 
 env:
   global:
+    - GO111MODULE=on
+    - GOFLAGS='-mod vendor'
     - secure: "KAujr5mge2CMsYFG8e1+I2ACZqsWRwF1pqqnDJ3AVZed6UbdT/1yPYyT2RO1JknVXCOi83h+Psf31AWVlO7IbEPLCwG5xDo5AJnNdnsNn9mTVd/ukiscJB6UWxOeCXTW6kUmd+5W72GIqlbgQb8xaTAbMpu6t+5cH1lRXoN+Osk="
 
 script:
@@ -25,3 +23,6 @@ script:
   - $HOME/gopath/bin/goveralls -coverprofile=coverage.out -service=travis-ci -repotoken $COVERALLS
 
 secure: "KAujr5mge2CMsYFG8e1+I2ACZqsWRwF1pqqnDJ3AVZed6UbdT/1yPYyT2RO1JknVXCOi83h+Psf31AWVlO7IbEPLCwG5xDo5AJnNdnsNn9mTVd/ukiscJB6UWxOeCXTW6kUmd+5W72GIqlbgQb8xaTAbMpu6t+5cH1lRXoN+Osk="
+
+notifications:
+  email: false
