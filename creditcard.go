@@ -28,7 +28,7 @@ func (d *digits) At(i int) int {
 // LastFour returns the last four digits of the credit card's number
 func (c *Card) LastFour() (string, error) {
 	if len(c.Number) < 4 {
-		return "", errors.New("Credit card number is not long enough.")
+		return "", errors.New("Credit card number is not long enough")
 	}
 
 	return c.Number[len(c.Number)-4 : len(c.Number)], nil
@@ -69,23 +69,23 @@ func (c *Card) Validate(allowTestNumbers ...bool) error {
 	}
 
 	if month < 1 || 12 < month {
-		return errors.New("Invalid month.")
+		return errors.New("Invalid month")
 	}
 
 	if year < time.Now().UTC().Year() {
-		return errors.New("Credit card has expired.")
+		return errors.New("Credit card has expired")
 	}
 
 	if year == time.Now().UTC().Year() && month < int(time.Now().UTC().Month()) {
-		return errors.New("Credit card has expired.")
+		return errors.New("Credit card has expired")
 	}
 
 	if len(c.Cvv) < 3 || len(c.Cvv) > 4 {
-		return errors.New("Invalid CVV.")
+		return errors.New("Invalid CVV")
 	}
 
 	if len(c.Number) < 13 {
-		return errors.New("Invalid credit card number.")
+		return errors.New("Invalid credit card number")
 	}
 
 	switch c.Number {
@@ -113,13 +113,13 @@ func (c *Card) Validate(allowTestNumbers ...bool) error {
 			return nil
 		}
 
-		return errors.New("Test numbers are not allowed.")
+		return errors.New("Test numbers are not allowed")
 	}
 
 	valid := c.ValidateNumber()
 
 	if !valid {
-		return errors.New("Invalid credit card number.")
+		return errors.New("Invalid credit card number")
 	}
 
 	return nil
@@ -212,7 +212,7 @@ func (c *Card) MethodValidate() (Company, error) {
 	case ccDigits.At(2) == 50:
 		return Company{"aura", "Aura"}, nil
 	default:
-		return Company{"", ""}, errors.New("Unknown credit card method.")
+		return Company{"", ""}, errors.New("Unknown credit card method")
 	}
 }
 
