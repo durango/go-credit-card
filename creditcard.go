@@ -46,46 +46,16 @@ func (c *Card) Wipe() {
 
 // Validate returns nil or an error describing why the credit card didn't validate
 // this method checks for expiration date, CCV/CVV and the credit card's numbers.
-// For allowing test cards to go through, simply pass true.(bool) as the first argument
+// For allowing test cards to go through, simply pass true (bool) as the first argument
 func (c *Card) Validate(allowTestNumbers ...bool) error {
-	var year, month int
-	var err error
-
-	if len(c.Year) < 3 {
-		year, err = strconv.Atoi(strconv.Itoa(time.Now().UTC().Year())[:2] + c.Year)
-		if err != nil {
-			return errors.New("Invalid year")
-		}
-	} else {
-		year, err = strconv.Atoi(c.Year)
-		if err != nil {
-			return errors.New("Invalid year")
-		}
-	}
-
-	month, err = strconv.Atoi(c.Month)
+	err := c.ValidateExpiration()
 	if err != nil {
-		return errors.New("Invalid month")
+		return err
 	}
 
-	if month < 1 || 12 < month {
-		return errors.New("Invalid month")
-	}
-
-	if year < time.Now().UTC().Year() {
-		return errors.New("Credit card has expired")
-	}
-
-	if year == time.Now().UTC().Year() && month < int(time.Now().UTC().Month()) {
-		return errors.New("Credit card has expired")
-	}
-
-	if len(c.Cvv) < 3 || len(c.Cvv) > 4 {
-		return errors.New("Invalid CVV")
-	}
-
-	if len(c.Number) < 13 {
-		return errors.New("Invalid credit card number")
+	err = c.ValidateCVV()
+	if err != nil {
+		return err
 	}
 
 	switch c.Number {
@@ -120,6 +90,52 @@ func (c *Card) Validate(allowTestNumbers ...bool) error {
 
 	if !valid {
 		return errors.New("Invalid credit card number")
+	}
+
+	return nil
+}
+
+// validates the credit card's expiration date
+func (c *Card) ValidateExpiration() error {
+	var year, month int
+	var err error
+
+	if len(c.Year) < 3 {
+		year, err = strconv.Atoi(strconv.Itoa(time.Now().UTC().Year())[:2] + c.Year)
+		if err != nil {
+			return errors.New("Invalid year")
+		}
+	} else {
+		year, err = strconv.Atoi(c.Year)
+		if err != nil {
+			return errors.New("Invalid year")
+		}
+	}
+
+	month, err = strconv.Atoi(c.Month)
+	if err != nil {
+		return errors.New("Invalid month")
+	}
+
+	if month < 1 || 12 < month {
+		return errors.New("Invalid month")
+	}
+
+	if year < time.Now().UTC().Year() {
+		return errors.New("Credit card has expired")
+	}
+
+	if year == time.Now().UTC().Year() && month < int(time.Now().UTC().Month()) {
+		return errors.New("Credit card has expired")
+	}
+
+	return nil
+}
+
+// validates the length of the card's CVV value
+func (c *Card) ValidateCVV() error {
+	if len(c.Cvv) < 3 || len(c.Cvv) > 4 {
+		return errors.New("Invalid CVV")
 	}
 
 	return nil
