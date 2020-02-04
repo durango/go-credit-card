@@ -49,14 +49,24 @@ func (c *Card) Wipe() {
 // For allowing test cards to go through, simply pass true.(bool) as the first argument
 func (c *Card) Validate(allowTestNumbers ...bool) error {
 	var year, month int
+	var err error
 
 	if len(c.Year) < 3 {
-		year, _ = strconv.Atoi(strconv.Itoa(time.Now().UTC().Year())[:2] + c.Year)
+		year, err = strconv.Atoi(strconv.Itoa(time.Now().UTC().Year())[:2] + c.Year)
+		if err != nil {
+			return errors.New("Invalid year")
+		}
 	} else {
-		year, _ = strconv.Atoi(c.Year)
+		year, err = strconv.Atoi(c.Year)
+		if err != nil {
+			return errors.New("Invalid year")
+		}
 	}
 
-	month, _ = strconv.Atoi(c.Month)
+	month, err = strconv.Atoi(c.Month)
+	if err != nil {
+		return errors.New("Invalid month")
+	}
 
 	if month < 1 || 12 < month {
 		return errors.New("Invalid month.")
@@ -130,12 +140,16 @@ func (c *Card) Method() error {
 
 // MethodValidate adds/checks/verifies the credit card's company / issuer
 func (c *Card) MethodValidate() (Company, error) {
+	var err error
 	ccLen := len(c.Number)
 	ccDigits := digits{}
 
 	for i := 0; i < 6; i++ {
 		if i < ccLen {
-			ccDigits[i], _ = strconv.Atoi(c.Number[:i+1])
+			ccDigits[i], err = strconv.Atoi(c.Number[:i+1])
+			if err != nil {
+				return Company{"", ""}, errors.New("Unknown credit card method")
+			}
 		}
 	}
 

@@ -82,6 +82,29 @@ func TestValidation(t *testing.T) {
 			So(err, ShouldNotBeNil)
 		})
 
+		Convey("When the expiration year is invalid", func() {
+			Convey("with two letters", func() {
+				card := Card{Number: "4012888888881881", Cvv: "111", Month: "1", Year: "ab"}
+				err := card.Validate(true)
+
+				So(err, ShouldNotBeNil)
+			})
+
+			Convey("with more than two letters", func() {
+				card := Card{Number: "4012888888881881", Cvv: "111", Month: "1", Year: "abc"}
+				err := card.Validate(true)
+
+				So(err, ShouldNotBeNil)
+			})
+		})
+
+		Convey("When the expiration month is invalid", func() {
+			card := Card{Number: "4012888888881881", Cvv: "111", Month: "abc", Year: year}
+			err := card.Validate(true)
+
+			So(err, ShouldNotBeNil)
+		})
+
 		Convey("and should work when we use only two numbers", func() {
 			card := Card{Number: "4012888888881881", Cvv: "111", Month: month, Year: year[2:]}
 			err := card.Validate(true)
@@ -122,6 +145,13 @@ func TestValidation(t *testing.T) {
 		})
 	})
 
+	Convey("Credit card number should validate to numbers only", t, func() {
+		card := Card{Number: "abcdefg", Cvv: "1111", Month: month, Year: year}
+		_, err := card.MethodValidate()
+
+		So(err, ShouldNotBeNil)
+	})
+
 	Convey("Credit card number length should matter", t, func() {
 		Convey("Should give us an error if the length is less than 13 characters", func() {
 			card := Card{Number: "1234", Cvv: "1111", Month: month, Year: year}
@@ -130,7 +160,7 @@ func TestValidation(t *testing.T) {
 			So(err, ShouldNotBeNil)
 		})
 
-		Convey("Should not give us an error if the nuber is greater than or equal to 13 characters", func() {
+		Convey("Should not give us an error if the number is greater than or equal to 13 characters", func() {
 			card := Card{Number: "4012888888881881", Cvv: "1111", Month: month, Year: year}
 			err := card.Validate(true)
 
