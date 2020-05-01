@@ -24,10 +24,7 @@ env:
   global:
     - GIMME_DEBUG=1
     - GO111MODULE=on
-    - GOFLAGS="-mod=vendor"
     - secure: "KAujr5mge2CMsYFG8e1+I2ACZqsWRwF1pqqnDJ3AVZed6UbdT/1yPYyT2RO1JknVXCOi83h+Psf31AWVlO7IbEPLCwG5xDo5AJnNdnsNn9mTVd/ukiscJB6UWxOeCXTW6kUmd+5W72GIqlbgQb8xaTAbMpu6t+5cH1lRXoN+Osk="
-  matrix:
-    - BUILD_DEPTYPE=gomod
 
 script:
   - go test -v -covermode=count -coverprofile=coverage.out
