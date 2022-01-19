@@ -467,3 +467,17 @@ func TestMethod(t *testing.T) {
 		})
 	})
 }
+
+func TestCard_ValidateExpiration(t *testing.T) {
+	Convey("should get an error if card year is current year and card month is before current month", t, func() {
+		defer resetMocks()
+		timeNowCaller = func() time.Time {
+			return time.Date(2001, 3, 1, 1, 1, 1, 1, time.UTC)
+		}
+		card := Card{Number: "4012888888881881", Cvv: "111", Month: "02", Year: "2001"}
+
+		err := card.ValidateExpiration()
+		So(err, ShouldNotBeNil)
+		So(err.Error(), ShouldEqual, "Credit card has expired")
+	})
+}

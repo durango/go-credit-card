@@ -1,10 +1,8 @@
-// Package creditcard provides methods for validating credit cards
 package creditcard
 
 import (
 	"errors"
 	"strconv"
-	"time"
 )
 
 // Card holds generic information about the credit card
@@ -99,9 +97,10 @@ func (c *Card) Validate(allowTestNumbers ...bool) error {
 func (c *Card) ValidateExpiration() error {
 	var year, month int
 	var err error
+	timeNow := timeNowCaller()
 
 	if len(c.Year) < 3 {
-		year, err = strconv.Atoi(strconv.Itoa(time.Now().UTC().Year())[:2] + c.Year)
+		year, err = strconv.Atoi(strconv.Itoa(timeNow.UTC().Year())[:2] + c.Year)
 		if err != nil {
 			return errors.New("Invalid year")
 		}
@@ -121,11 +120,11 @@ func (c *Card) ValidateExpiration() error {
 		return errors.New("Invalid month")
 	}
 
-	if year < time.Now().UTC().Year() {
+	if year < timeNowCaller().UTC().Year() {
 		return errors.New("Credit card has expired")
 	}
 
-	if year == time.Now().UTC().Year() && month < int(time.Now().UTC().Month()) {
+	if year == timeNowCaller().UTC().Year() && month < int(timeNowCaller().UTC().Month()) {
 		return errors.New("Credit card has expired")
 	}
 
