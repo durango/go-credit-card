@@ -255,3 +255,7 @@ func matchesValue(number int, numbers []int) bool {
 	}
 	return false
 }
+
+func isInBetween(n, min, max int) bool {
+	return n >= min && n <= max
+}

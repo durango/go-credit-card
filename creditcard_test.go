@@ -1,10 +1,11 @@
 package creditcard
 
 import (
-	. "github.com/smartystreets/goconvey/convey"
 	"strconv"
 	"testing"
 	"time"
+
+	. "github.com/smartystreets/goconvey/convey"
 )
 
 func TestFourDigits(t *testing.T) {

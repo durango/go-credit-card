@@ -1,55 +1,66 @@
 package creditcard
 
 func isAmex(ccDigits digits) bool {
-	return ccDigits.At(2) == 34 || ccDigits.At(2) == 37
+	return matchesValue(ccDigits.At(2), []int{34, 37})
 }
 
 func isBankCard(ccDigits digits) bool {
-	return ccDigits.At(4) == 5610 || (ccDigits.At(6) >= 560221 && ccDigits.At(6) <= 560225)
+	return ccDigits.At(4) == 5610 || isInBetween(ccDigits.At(6), 560221, 560225)
 }
 
 func isCabal(ccDigits digits) bool {
-	return ccDigits.At(6) == 604400 || ccDigits.At(6) == 627170 || ccDigits.At(6) == 603522 || ccDigits.At(6) == 589657 || (ccDigits.At(6) >= 604201 && ccDigits.At(6) <= 604219) || (ccDigits.At(6) >= 604300 && ccDigits.At(6) <= 604399)
+	atSix := ccDigits.At(6)
+
+	return matchesValue(atSix, []int{604400, 627170, 603522, 589657}) ||
+		isInBetween(atSix, 604201, 604219) ||
+		isInBetween(atSix, 604300, 604399)
 }
 
 func isUnionPay(ccDigits digits) bool {
-	return ccDigits.At(2) == 62 || ccDigits.At(2) == 81
+	return matchesValue(ccDigits.At(2), []int{62, 81})
 }
 
 func isDinersClubCarteBlance(ccDigits digits, ccLen int) bool {
-	return ccDigits.At(3) >= 300 && ccDigits.At(3) <= 305 && ccLen == 15
+	return isInBetween(ccDigits.At(3), 300, 305) && ccLen == 15
 }
 
 func isDinersClubEnroute(ccDigits digits) bool {
-	return ccDigits.At(4) == 2014 || ccDigits.At(4) == 2149
+	return matchesValue(ccDigits.At(4), []int{2014, 2149})
 }
 
 func isDinersClubInternational(ccDigits digits, ccLen int) bool {
-	return ((ccDigits.At(3) >= 300 && ccDigits.At(3) <= 305) || ccDigits.At(3) == 309 || ccDigits.At(2) == 36 || ccDigits.At(2) == 38 || ccDigits.At(2) == 39) && ccLen <= 14
+	checkThree := isInBetween(ccDigits.At(3), 300, 305) || ccDigits.At(3) == 309
+	checkTwoo := matchesValue(ccDigits.At(2), []int{36, 38, 39})
+
+	return (checkThree || checkTwoo) && ccLen <= 14
 }
 
 func isDiscover(ccDigits digits) bool {
-	return ccDigits.At(4) == 6011 || (ccDigits.At(6) >= 622126 && ccDigits.At(6) <= 622925) || (ccDigits.At(3) >= 644 && ccDigits.At(3) <= 649) || ccDigits.At(2) == 65
+	return ccDigits.At(4) == 6011 ||
+		isInBetween(ccDigits.At(6), 622126, 622925) ||
+		isInBetween(ccDigits.At(3), 644, 649) ||
+		ccDigits.At(2) == 65
 }
 
 func isElo(ccDigits digits) bool {
-	return ccDigits.At(4) == 4011 || ccDigits.At(6) == 431274 || ccDigits.At(6) == 438935 ||
-		ccDigits.At(6) == 451416 || ccDigits.At(6) == 457393 || ccDigits.At(4) == 4576 ||
-		ccDigits.At(6) == 457631 || ccDigits.At(6) == 457632 || ccDigits.At(6) == 504175 ||
-		ccDigits.At(6) == 627780 || ccDigits.At(6) == 636297 || ccDigits.At(6) == 636368 ||
-		ccDigits.At(6) == 636369 || (ccDigits.At(6) >= 506699 && ccDigits.At(6) <= 506778) ||
-		(ccDigits.At(6) >= 509000 && ccDigits.At(6) <= 509999) ||
-		(ccDigits.At(6) >= 650031 && ccDigits.At(6) <= 650051) ||
-		(ccDigits.At(6) >= 650035 && ccDigits.At(6) <= 650033) ||
-		(ccDigits.At(6) >= 650405 && ccDigits.At(6) <= 650439) ||
-		(ccDigits.At(6) >= 650485 && ccDigits.At(6) <= 650538) ||
-		(ccDigits.At(6) >= 650541 && ccDigits.At(6) <= 650598) ||
-		(ccDigits.At(6) >= 650700 && ccDigits.At(6) <= 650718) ||
-		(ccDigits.At(6) >= 650720 && ccDigits.At(6) <= 650727) ||
-		(ccDigits.At(6) >= 650901 && ccDigits.At(6) <= 650920) ||
-		(ccDigits.At(6) >= 651652 && ccDigits.At(6) <= 651679) ||
-		(ccDigits.At(6) >= 655000 && ccDigits.At(6) <= 655019) ||
-		(ccDigits.At(6) >= 655021 && ccDigits.At(6) <= 655021)
+	atFour := ccDigits.At(4)
+	atSix := ccDigits.At(6)
+
+	return matchesValue(atFour, []int{4011, 4576}) ||
+		matchesValue(atSix, []int{431274, 438935, 451416, 457393, 457631, 457632, 504175, 627780, 636297, 636368, 636369}) ||
+		isInBetween(atSix, 506699, 506778) ||
+		isInBetween(atSix, 509000, 509999) ||
+		isInBetween(atSix, 650031, 650051) ||
+		isInBetween(atSix, 650035, 650033) ||
+		isInBetween(atSix, 650405, 650439) ||
+		isInBetween(atSix, 650485, 650538) ||
+		isInBetween(atSix, 650541, 650598) ||
+		isInBetween(atSix, 650700, 650718) ||
+		isInBetween(atSix, 650720, 650727) ||
+		isInBetween(atSix, 650901, 650920) ||
+		isInBetween(atSix, 651652, 651679) ||
+		isInBetween(atSix, 655000, 655019) ||
+		isInBetween(atSix, 655021, 655021)
 }
 
 func isHipercard(ccDigits digits) bool {
@@ -57,15 +68,15 @@ func isHipercard(ccDigits digits) bool {
 }
 
 func isInterpayment(ccDigits digits, ccLen int) bool {
-	return ccDigits.At(3) == 636 && ccLen >= 16 && ccLen <= 19
+	return ccDigits.At(3) == 636 && isInBetween(ccLen, 16, 19)
 }
 
 func isInstapayment(ccDigits digits, ccLen int) bool {
-	return ccDigits.At(3) >= 637 && ccDigits.At(3) <= 639 && ccLen == 16
+	return isInBetween(ccDigits.At(3), 637, 639) && ccLen == 16
 }
 
 func isJCB(ccDigits digits) bool {
-	return ccDigits.At(4) >= 3528 && ccDigits.At(4) <= 3589
+	return isInBetween(ccDigits.At(4), 3528, 3589)
 }
 
 func isNaranja(ccDigits digits) bool {
@@ -73,7 +84,8 @@ func isNaranja(ccDigits digits) bool {
 }
 
 func isMaestro(c *Card, ccDigits digits) bool {
-	return ccDigits.At(4) == 5018 || ccDigits.At(4) == 5020 || ccDigits.At(4) == 5038 || ccDigits.At(4) == 5612 || ccDigits.At(4) == 5893 || ccDigits.At(4) == 6304 || ccDigits.At(4) == 6759 || ccDigits.At(4) == 6761 || ccDigits.At(4) == 6762 || ccDigits.At(4) == 6763 || c.Number[:3] == "0604" || ccDigits.At(4) == 6390
+	return matchesValue(ccDigits.At(4), []int{5018, 5020, 5038, 5612, 5893, 6304, 6759, 6761, 6762, 6763, 6390}) ||
+		c.Number[:3] == "0604"
 }
 
 func isDankort(ccDigits digits) bool {
@@ -81,11 +93,11 @@ func isDankort(ccDigits digits) bool {
 }
 
 func isMasterCard(ccDigits digits) bool {
-	return ccDigits.At(2) >= 51 && ccDigits.At(2) <= 55 || ccDigits.At(6) >= 222100 && ccDigits.At(6) <= 272099
+	return isInBetween(ccDigits.At(2), 51, 55) || isInBetween(ccDigits.At(6), 222100, 272099)
 }
 
 func isVisaElectron(ccDigits digits) bool {
-	return ccDigits.At(4) == 4026 || ccDigits.At(6) == 417500 || ccDigits.At(4) == 4405 || ccDigits.At(4) == 4508 || ccDigits.At(4) == 4844 || ccDigits.At(4) == 4913 || ccDigits.At(4) == 4917
+	return matchesValue(ccDigits.At(4), []int{4026, 4405, 4508, 4844, 4913, 4917}) || ccDigits.At(6) == 417500
 }
 
 func isVisa(ccDigits digits) bool {
