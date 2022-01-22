@@ -1,32 +1,26 @@
 package creditcard
 
 import (
-	"errors"
 	"strconv"
 )
 
 // Card holds generic information about the credit card
 type Card struct {
-	Number, Cvv, Month, Year string
-	Company                  Company
+	Company Company `json:"company"`
+	Cvv     string  `json:"cvv,omitempty"`
+	Month   string  `json:"month,omitempty"`
+	Number  string  `json:"number,omitempty"`
+	Year    string  `json:"year,omitempty"`
 }
 
-// Company holds a short and long names of who has issued the credit card
-type Company struct {
-	Short, Long string
-}
-
-type digits [6]int
-
-// At returns the digits from the start to the given length
-func (d *digits) At(i int) int {
-	return d[i-1]
+func NewCard(cvv string, month string, number string, year string) *Card {
+	return &Card{Cvv: cvv, Month: month, Number: number, Year: year}
 }
 
 // LastFour returns the last four digits of the credit card's number
 func (c *Card) LastFour() (string, error) {
 	if len(c.Number) < 4 {
-		return "", errors.New("Credit card number is not long enough")
+		return "", errCardNumberNotLongEnough
 	}
 
 	return c.Number[len(c.Number)-4 : len(c.Number)], nil
@@ -81,19 +75,19 @@ func (c *Card) Validate(allowTestNumbers ...bool) error {
 			return nil
 		}
 
-		return errors.New("Test numbers are not allowed")
+		return errTestNumbersNotAllowed
 	}
 
 	valid := c.ValidateNumber()
 
 	if !valid {
-		return errors.New("Invalid credit card number")
+		return errInvalidCardNumber
 	}
 
 	return nil
 }
 
-// validates the credit card's expiration date
+// ValidateExpiration validates the credit card's expiration date.
 func (c *Card) ValidateExpiration() error {
 	var year, month int
 	var err error
@@ -102,39 +96,39 @@ func (c *Card) ValidateExpiration() error {
 	if len(c.Year) < 3 {
 		year, err = strconv.Atoi(strconv.Itoa(timeNow.UTC().Year())[:2] + c.Year)
 		if err != nil {
-			return errors.New("Invalid year")
+			return errInvalidYear
 		}
 	} else {
 		year, err = strconv.Atoi(c.Year)
 		if err != nil {
-			return errors.New("Invalid year")
+			return errInvalidYear
 		}
 	}
 
 	month, err = strconv.Atoi(c.Month)
 	if err != nil {
-		return errors.New("Invalid month")
+		return errInvalidMonth
 	}
 
 	if month < 1 || 12 < month {
-		return errors.New("Invalid month")
+		return errInvalidMonth
 	}
 
-	if year < timeNowCaller().UTC().Year() {
-		return errors.New("Credit card has expired")
+	if year < timeNow.UTC().Year() {
+		return errCardHasExpired
 	}
 
-	if year == timeNowCaller().UTC().Year() && month < int(timeNowCaller().UTC().Month()) {
-		return errors.New("Credit card has expired")
+	if year == timeNow.UTC().Year() && month < int(timeNow.UTC().Month()) {
+		return errCardHasExpired
 	}
 
 	return nil
 }
 
-// validates the length of the card's CVV value
+// ValidateCVV validates the length of the card's CVV value.
 func (c *Card) ValidateCVV() error {
 	if len(c.Cvv) < 3 || len(c.Cvv) > 4 {
-		return errors.New("Invalid CVV")
+		return errInvalidCVV
 	}
 
 	return nil
@@ -163,55 +157,55 @@ func (c *Card) MethodValidate() (Company, error) {
 		if i < ccLen {
 			ccDigits[i], err = strconv.Atoi(c.Number[:i+1])
 			if err != nil {
-				return Company{"", ""}, errors.New("Unknown credit card method")
+				return getCompany(""), errUnkownCardMethod
 			}
 		}
 	}
 
 	switch {
 	case isAmex(ccDigits):
-		return Company{"amex", "American Express"}, nil
+		return getCompany(CompanyAmericanExpress), nil
 	case isBankCard(ccDigits):
-		return Company{"bankcard", "Bankcard"}, nil
+		return getCompany(CompanyBankCard), nil
 	case isCabal(ccDigits):
-		return Company{"cabal", "Cabal"}, nil
+		return getCompany(CompanyCabal), nil
 	case isUnionPay(ccDigits):
-		return Company{"china unionpay", "China UnionPay"}, nil
+		return getCompany(CompanyChinaUnionPay), nil
 	case isDinersClubCarteBlance(ccDigits, ccLen):
-		return Company{"diners club carte blanche", "Diners Club Carte Blanche"}, nil
+		return getCompany(CompanyDinersClubCarteBlance), nil
 	case isDinersClubEnroute(ccDigits):
-		return Company{"diners club enroute", "Diners Club enRoute"}, nil
+		return getCompany(CompanyDinersClubEnRoute), nil
 	case isDinersClubInternational(ccDigits, ccLen):
-		return Company{"diners club international", "Diners Club International"}, nil
+		return getCompany(CompanyDinersClubInternational), nil
 	case isDiscover(ccDigits):
-		return Company{"discover", "Discover"}, nil
+		return getCompany(CompanyDiscover), nil
 	// Elo must be checked before interpayment
 	case isElo(ccDigits):
-		return Company{"elo", "Elo"}, nil
+		return getCompany(CompanyElo), nil
 	case isHipercard(ccDigits):
-		return Company{"hipercard", "Hipercard"}, nil
+		return getCompany(CompanyHipercard), nil
 	case isInterpayment(ccDigits, ccLen):
-		return Company{"interpayment", "InterPayment"}, nil
+		return getCompany(CompanyInterPayment), nil
 	case isInstapayment(ccDigits, ccLen):
-		return Company{"instapayment", "InstaPayment"}, nil
+		return getCompany(CompanyInstaPayment), nil
 	case isJCB(ccDigits):
-		return Company{"jcb", "JCB"}, nil
+		return getCompany(CompanyJCB), nil
 	case isNaranja(ccDigits):
-		return Company{"naranja", "Naranja"}, nil
+		return getCompany(CompanyNaranja), nil
 	case isMaestro(c, ccDigits):
-		return Company{"maestro", "Maestro"}, nil
+		return getCompany(CompanyMaestro), nil
 	case isDankort(ccDigits):
-		return Company{"dankort", "Dankort"}, nil
+		return getCompany(CompanyDankort), nil
 	case isMasterCard(ccDigits):
-		return Company{"mastercard", "MasterCard"}, nil
+		return getCompany(CompanyMasterCard), nil
 	case isVisaElectron(ccDigits):
-		return Company{"visa electron", "Visa Electron"}, nil
+		return getCompany(CompanyVisaElectron), nil
 	case isVisa(ccDigits):
-		return Company{"visa", "Visa"}, nil
+		return getCompany(CompanyVisa), nil
 	case isAura(ccDigits):
-		return Company{"aura", "Aura"}, nil
+		return getCompany(CompanyAura), nil
 	default:
-		return Company{"", ""}, errors.New("Unknown credit card method")
+		return getCompany(""), errUnkownCardMethod
 	}
 }
 
@@ -244,17 +238,4 @@ func (c *Card) ValidateNumber() bool {
 	}
 
 	return sum%10 == 0
-}
-
-func matchesValue(number int, numbers []int) bool {
-	for _, v := range numbers {
-		if v == number {
-			return true
-		}
-	}
-	return false
-}
-
-func isInBetween(n, min, max int) bool {
-	return n >= min && n <= max
 }

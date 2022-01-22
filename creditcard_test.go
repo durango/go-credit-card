@@ -8,6 +8,17 @@ import (
 	. "github.com/smartystreets/goconvey/convey"
 )
 
+func TestNewCard(t *testing.T) {
+	Convey("Should return a new Card pointer", t, func() {
+		res := NewCard("123", "01", "1234567890123456", "2022")
+		So(res, ShouldNotBeNil)
+		So(res.Cvv, ShouldEqual, "123")
+		So(res.Month, ShouldEqual, "01")
+		So(res.Number, ShouldEqual, "1234567890123456")
+		So(res.Year, ShouldEqual, "2022")
+	})
+}
+
 func TestFourDigits(t *testing.T) {
 	Convey("Should be able to retrieve the last four digits of my card", t, func() {
 		Convey("When I have four or more digits", func() {
@@ -478,6 +489,6 @@ func TestCard_ValidateExpiration(t *testing.T) {
 
 		err := card.ValidateExpiration()
 		So(err, ShouldNotBeNil)
-		So(err.Error(), ShouldEqual, "Credit card has expired")
+		So(err.Error(), ShouldEqual, "credit card has expired")
 	})
 }
