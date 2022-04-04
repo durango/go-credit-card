@@ -20,8 +20,8 @@ func isUnionPay(ccDigits digits) bool {
 	return matchesValue(ccDigits.At(2), []int{62, 81})
 }
 
-func isDinersClubCarteBlance(ccDigits digits, ccLen int) bool {
-	return isInBetween(ccDigits.At(3), 300, 305) && ccLen == 15
+func isDinersClubCarteBlanche(ccDigits digits, ccLen int) bool {
+	return isInBetween(ccDigits.At(3), 300, 305) && ccLen == 14
 }
 
 func isDinersClubEnroute(ccDigits digits) bool {
