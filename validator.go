@@ -21,7 +21,7 @@ func isUnionPay(ccDigits digits) bool {
 }
 
 func isDinersClubCarteBlance(ccDigits digits, ccLen int) bool {
-	return isInBetween(ccDigits.At(3), 300, 305) && ccLen == 15
+	return isInBetween(ccDigits.At(3), 300, 305) && ccLen == 14
 }
 
 func isDinersClubEnroute(ccDigits digits) bool {
