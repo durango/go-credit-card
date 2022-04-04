@@ -177,7 +177,7 @@ func (c *Card) MethodValidate() (Company, error) {
 		return Company{"cabal", "Cabal"}, nil
 	case isUnionPay(ccDigits):
 		return Company{"china unionpay", "China UnionPay"}, nil
-	case isDinersClubCarteBlance(ccDigits, ccLen):
+	case isDinersClubCarteBlanche(ccDigits, ccLen):
 		return Company{"diners club carte blanche", "Diners Club Carte Blanche"}, nil
 	case isDinersClubEnroute(ccDigits):
 		return Company{"diners club enroute", "Diners Club enRoute"}, nil
