@@ -24,6 +24,7 @@ Currently identifies the following credit card companies:
 - Naranja
 - Visa
 - Visa Electron
+- MIR
 
 ## Installation
 
