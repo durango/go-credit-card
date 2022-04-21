@@ -282,7 +282,7 @@ func TestMethod(t *testing.T) {
 
 		Convey("Should work for Diners club", func() {
 			Convey("Carte blanche", func() {
-				card := Card{Number: "300221111111111", Cvv: "1111", Month: month, Year: year}
+				card := Card{Number: "30022111111111", Cvv: "1111", Month: month, Year: year}
 				err := card.Method()
 
 				So(err, ShouldBeNil)
@@ -455,6 +455,15 @@ func TestMethod(t *testing.T) {
 			So(err, ShouldBeNil)
 			So(card.Company.Short, ShouldEqual, "elo")
 			So(card.Company.Long, ShouldEqual, "Elo")
+		})
+
+		Convey("Should work for MIR", func() {
+			card := Card{Number: "2200770212727079", Cvv: "888", Month: month, Year: year}
+			err := card.Method()
+
+			So(err, ShouldBeNil)
+			So(card.Company.Short, ShouldEqual, "mir")
+			So(card.Company.Long, ShouldEqual, "MIR")
 		})
 
 		Convey("Should fail to recognize an unknown number", func() {
