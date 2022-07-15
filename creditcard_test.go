@@ -279,17 +279,15 @@ func TestMethod(t *testing.T) {
 			So(card.Company.Short, ShouldEqual, "cabal")
 			So(card.Company.Long, ShouldEqual, "Cabal")
 		})
-
 		Convey("Should work for Diners club", func() {
 			Convey("Carte blanche", func() {
-				card := Card{Number: "300221111111111", Cvv: "1111", Month: month, Year: year}
+				card := Card{Number: "30022111111111", Cvv: "1111", Month: month, Year: year}
 				err := card.Method()
 
 				So(err, ShouldBeNil)
 				So(card.Company.Short, ShouldEqual, "diners club carte blanche")
 				So(card.Company.Long, ShouldEqual, "Diners Club Carte Blanche")
 			})
-
 			Convey("Club enRoute", func() {
 				card := Card{Number: "20142111111111", Cvv: "1111", Month: month, Year: year}
 				err := card.Method()
@@ -308,7 +306,6 @@ func TestMethod(t *testing.T) {
 				So(card.Company.Long, ShouldEqual, "Diners Club International")
 			})
 		})
-
 		Convey("Should work for China UnionPay", func() {
 			Convey("62", func() {
 				card := Card{Number: "62111111111", Cvv: "1111", Month: month, Year: year}

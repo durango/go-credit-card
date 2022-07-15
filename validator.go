@@ -84,7 +84,7 @@ func isNaranja(ccDigits digits) bool {
 }
 
 func isMaestro(c *Card, ccDigits digits) bool {
-	return matchesValue(ccDigits.At(4), []int{5018, 5020, 5038, 5612, 5893, 6304, 6759, 6761, 6762, 6763, 6390}) ||
+	return matchesValue(ccDigits.At(4), []int{5018, 5020, 5038, 5612, 5893, 6304, 6759, 6761, 6762, 6763, 6390, 6799}) ||
 		c.Number[:3] == "0604"
 }
 
